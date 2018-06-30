@@ -1,0 +1,20 @@
+﻿<Properties StartupConfiguration="{129ADB85-A37D-772A-E1B7-2D5B505BD52C}|">
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="Unity.Editor" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/WorldTrackableEventHandler.cs">
+    <Files>
+      <File FileName="Assets/Scripts/CreateFourPoints.cs" Line="109" Column="27" />
+      <File FileName="Assets/Scripts/DRUtil.cs" Line="155" Column="113" />
+      <File FileName="Assets/Scripts/DisplayFrame.cs" Line="74" Column="13" />
+      <File FileName="Assets/Scripts/CameraInitialisation.cs" Line="49" Column="48" />
+      <File FileName="Assets/Scripts/SelectRegion.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/SelectRegion3D.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/WorldTrackableEventHandler.cs" Line="89" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MultiItemStartupConfigurations />
+</Properties>
