@@ -30,10 +30,10 @@ public class DRUtil
     public static extern void fourPointsInpainting(IntPtr outputData, int height, int width, int channels, byte[] imageData, Point2d[] points);
 
     [DllImport("DRDll")]
-    public static extern void tempFourPointsInpainting(IntPtr outputData, int height, int width, int channels, byte[] inpaintedImageData, Point2d[] frame0Points, byte[] currentImageData, Point2d[] current0Points);
+    public static extern void tempFourPointsInpainting(IntPtr outputData, int height, int width, int channels, byte[] inpaintedImageData, byte[] maskData, Point2d[] frame0Points, byte[] currentImageData, Point2d[] current0Points);
 
     [DllImport("DRDll")]
-    public static extern void initFourPointsInpainting(byte[] outputData, int height, int width, int channels, byte[] frame0ImageData, Point2d[] frame0Points, int method);
+    public static extern void initFourPointsInpainting(byte[] resultData, byte[] inpaintedData, byte[] maskData, int height, int width, int channels, byte[] frame0ImageData, Point2d[] frame0Points, int method, int parameter);
 
     [StructLayout(LayoutKind.Sequential)]  
     public struct Rect2d 
@@ -68,7 +68,9 @@ public class DRUtil
     public bool loseTracked = true;
 
     private GCHandle inpaintedHandle;
+    public byte[] result;
     public byte[] inpainted;
+    public byte[] mask;
 
     public Point2d[] currentPoint2ds = { new Point2d { x = 0, y = 0 }, new Point2d { x = 0, y = 0 },
         new Point2d { x = 0, y = 0 }, new Point2d { x = 0, y = 0 } };
@@ -151,8 +153,17 @@ public class DRUtil
             frame0Point2ds[2] = point2;
             frame0Point2ds[3] = point3;
 
+            result = new byte[pixels.Length];
             inpainted = new byte[pixels.Length];
-            initFourPointsInpainting(inpainted, frame0.Height, frame0.Width, 1, frame0Pixels, frame0Point2ds, 30);
+            mask = new byte[pixels.Length];
+            initFourPointsInpainting(result, inpainted, mask, frame0.Height, frame0.Width, CameraInitialisation.channels, frame0Pixels, frame0Point2ds, 3, 16);
+
+            //Marshal.Copy(intPtr, inpainted, 0, pixels.Length);
+
+            //Marshal.Release(intPtr);
+
+            //readImage(frame0.Height, frame0.Width, CameraInitialisation.channels, inpainted);
+            //readImage(frame0.Height, frame0.Width, CameraInitialisation.channels, mask);
 
             VuforiaARController.Instance.RegisterTrackablesUpdatedCallback(OnTrackablesUpdated);
 

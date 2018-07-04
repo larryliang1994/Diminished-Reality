@@ -11,8 +11,6 @@ public class WorldTrackableEventHandler : MonoBehaviour, ITrackableEventHandler
 
     #endregion // PROTECTED_MEMBER_VARIABLES
 
-    public Camera arCamera;
-
     private bool found = false;
 
     #region UNITY_MONOBEHAVIOUR_METHODS
@@ -48,10 +46,10 @@ public class WorldTrackableEventHandler : MonoBehaviour, ITrackableEventHandler
         {
             Debug.Log("Trackable " + mTrackableBehaviour.TrackableName + " found");
 
-            if (!found)
-            {
+            //if (!found)
+            //{
                 OnTrackingFound();
-            }
+            //}
         }
         else if (previousStatus == TrackableBehaviour.Status.TRACKED &&
                  newStatus == TrackableBehaviour.Status.NO_POSE)
@@ -116,11 +114,6 @@ public class WorldTrackableEventHandler : MonoBehaviour, ITrackableEventHandler
         //VuforiaARController.Instance.UnregisterTrackablesUpdatedCallback(OnTrackablesUpdated);
 
         found = false;
-    }
-
-    private void OnTrackablesUpdated()
-    {
-        //Debug.Log(arCamera.transform.position);
     }
 
     #endregion // PROTECTED_METHODS

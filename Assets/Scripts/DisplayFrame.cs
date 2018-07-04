@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -15,6 +16,8 @@ public class DisplayFrame : MonoBehaviour
     private Texture2D texture;
     private Color32[] pixels;
     private GCHandle pixelsHandle;
+
+    private Texture2D copyTexture;
 
     private int currentFrameCount = 0;
 
@@ -46,31 +49,46 @@ public class DisplayFrame : MonoBehaviour
 
         if (!DRUtil.Instance.loseTracked && currentFrameCount < DRUtil.Instance.currentFrameCount)
         {
+            //if (background == null)
             if (background == null || texture == null || pixels == null)
             {
                 background = transform.GetChild(0).gameObject;
                 texture = background.GetComponent<Renderer>().material.mainTexture as Texture2D;
-                pixels = texture.GetPixels32();
+
+                copyTexture = duplicateTexture(texture);
+
+                pixels = copyTexture.GetPixels32();
 
                 pixelsHandle.Free();
                 pixelsHandle = GCHandle.Alloc(pixels, GCHandleType.Pinned);
+
+                background.GetComponent<Renderer>().material.mainTexture = copyTexture;
+
+                Debug.Log("Copy now.");
             }
 
             //DRUtil.fourPointsInpainting(pixelsHandle.AddrOfPinnedObject(), texture.height, texture.width, CameraInitialisation.channels,
-                                        //DRUtil.Instance.image.Pixels, DRUtil.Instance.currentPoint2ds);
+            //DRUtil.Instance.image.Pixels, DRUtil.Instance.currentPoint2ds);
 
             //DRUtil.tempFourPointsInpainting(pixelsHandle.AddrOfPinnedObject(), texture.height, texture.width, CameraInitialisation.channels,
-                                            //DRUtil.Instance.frame0.Pixels,  DRUtil.Instance.image.Pixels, DRUtil.Instance.frame0Point2ds, DRUtil.Instance.currentPoint2ds);
-
+            //DRUtil.Instance.frame0.Pixels,  DRUtil.Instance.image.Pixels, DRUtil.Instance.frame0Point2ds, DRUtil.Instance.currentPoint2ds);
 
             //DRUtil.averageInpainting(pixelsHandle.AddrOfPinnedObject(), texture.height, texture.width, CameraInitialisation.channels, 
-                                              //DRUtil.Instance.image.Pixels, DRUtil.Instance.cameraRect);
+            //DRUtil.Instance.image.Pixels, DRUtil.Instance.cameraRect);
+
+            //IntPtr address = pixelsHandle.AddrOfPinnedObject();
+            //Debug.Log("currentPoint2ds0 = " + DRUtil.Instance.currentPoint2ds[0].x + ", " + DRUtil.Instance.currentPoint2ds[0].y);
+            //Debug.Log("currentPoint2ds1 = " + DRUtil.Instance.currentPoint2ds[1].x + ", " + DRUtil.Instance.currentPoint2ds[1].y);
+            //Debug.Log("currentPoint2ds2 = " + DRUtil.Instance.currentPoint2ds[2].x + ", " + DRUtil.Instance.currentPoint2ds[2].y);
+            //Debug.Log("currentPoint2ds3 = " + DRUtil.Instance.currentPoint2ds[3].x + ", " + DRUtil.Instance.currentPoint2ds[3].y);
 
             DRUtil.tempFourPointsInpainting(pixelsHandle.AddrOfPinnedObject(), texture.height, texture.width, CameraInitialisation.channels,
-                                            DRUtil.Instance.inpainted, DRUtil.Instance.frame0Point2ds, DRUtil.Instance.image.Pixels, DRUtil.Instance.currentPoint2ds);
+                                            DRUtil.Instance.inpainted, DRUtil.Instance.mask, DRUtil.Instance.frame0Point2ds, DRUtil.Instance.image.Pixels, DRUtil.Instance.currentPoint2ds);
 
-            texture.SetPixels32(pixels);
-            texture.Apply();
+            
+
+            copyTexture.SetPixels32(pixels);
+            copyTexture.Apply();
 
             //pixelsHandle.Free();
 
@@ -87,16 +105,37 @@ public class DisplayFrame : MonoBehaviour
         }
 	}
 
+    Texture2D duplicateTexture(Texture2D source)
+    {
+        RenderTexture renderTex = RenderTexture.GetTemporary(
+                    source.width,
+                    source.height,
+                    0,
+                    RenderTextureFormat.Default,
+                    RenderTextureReadWrite.Linear);
+
+        Graphics.Blit(source, renderTex);
+        RenderTexture previous = RenderTexture.active;
+        RenderTexture.active = renderTex;
+        Texture2D readableText = new Texture2D(source.width, source.height);
+        readableText.ReadPixels(new Rect(0, 0, renderTex.width, renderTex.height), 0, 0);
+        readableText.Apply();
+        RenderTexture.active = previous;
+        RenderTexture.ReleaseTemporary(renderTex);
+        return readableText;
+    }
+
     public void TempFourPointsInpainting()
     {
         //DRUtil.readImage(DRUtil.Instance.frame0.Height, DRUtil.Instance.frame0.Width, 1, DRUtil.Instance.frame0Pixels);
 
-        DRUtil.tempFourPointsInpainting(pixelsHandle.AddrOfPinnedObject(), texture.height, texture.width, CameraInitialisation.channels,
-                                        DRUtil.Instance.frame0Pixels, DRUtil.Instance.frame0Point2ds, DRUtil.Instance.image.Pixels, DRUtil.Instance.currentPoint2ds);
+        //DRUtil.tempFourPointsInpainting(pixelsHandle.AddrOfPinnedObject(), texture.height, texture.width, CameraInitialisation.channels,
+                                        //DRUtil.Instance.frame0Pixels, DRUtil.Instance.frame0Point2ds, DRUtil.Instance.image.Pixels, DRUtil.Instance.currentPoint2ds);
     }
 
     private void OnGUI()
     {
+        //fpsText.text = "FPS:" + DRUtil.add(8, 9).ToString();
         fpsText.text = "FPS:" + ((int)m_lastFramerate).ToString();
     }
 
