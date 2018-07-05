@@ -84,9 +84,7 @@ public class DRUtil
 
     public void SetCurrentRect(double x, double y, double width, double height)
     {
-        CameraDevice.VideoModeData vmd;
-        vmd = CameraDevice.Instance.GetVideoMode(CameraDevice.CameraDeviceMode.MODE_OPTIMIZE_QUALITY);
-        Debug.Log("Dimensions: " + vmd.width + "x" + vmd.height);
+        Debug.Log("Dimensions: " + CameraInitialisation.width + "x" + CameraInitialisation.height);
 
         guiRect = new Rect2d
         {
@@ -122,11 +120,13 @@ public class DRUtil
 
     public void InpaintWithFourPoints(Vector2[] points)
     {
-        //CameraDevice.VideoModeData vmd;
-        //vmd = CameraDevice.Instance.GetVideoMode(CameraDevice.CameraDeviceMode.MODE_OPTIMIZE_QUALITY);
-        //Debug.Log("Dimensions: " + vmd.width + "x" + vmd.height);
+        Debug.Log("Screen Dimensions: " + Screen.width + "x" + Screen.height);
+
+        Debug.Log("CameraDevice Dimensions: " + CameraInitialisation.width + "x" + CameraInitialisation.height);
 
         frame0 = CameraDevice.Instance.GetCameraImage(CameraInitialisation.pixelFormat);
+
+        Debug.Log("Frame0 Resolution: " + frame0.Width + "x" + frame0.Height);
 
         //readImage(frame0.Height, frame0.Width, 1, frame0.Pixels);
 
@@ -143,10 +143,10 @@ public class DRUtil
             Point2d point2 = new Point2d { x = (int)points[2].x, y = Screen.height - (int)points[2].y };
             Point2d point3 = new Point2d { x = (int)points[3].x, y = Screen.height - (int)points[3].y };
 
-            point0 = GUIPoint2CameraPoint(point0);
-            point1 = GUIPoint2CameraPoint(point1);
-            point2 = GUIPoint2CameraPoint(point2);
-            point3 = GUIPoint2CameraPoint(point3);
+            point0 = GUIPoint2CameraPoint(point0, frame0.Width, frame0.Height);
+            point1 = GUIPoint2CameraPoint(point1, frame0.Width, frame0.Height);
+            point2 = GUIPoint2CameraPoint(point2, frame0.Width, frame0.Height);
+            point3 = GUIPoint2CameraPoint(point3, frame0.Width, frame0.Height);
 
             frame0Point2ds[0] = point0;
             frame0Point2ds[1] = point1;
@@ -156,7 +156,7 @@ public class DRUtil
             result = new byte[pixels.Length];
             inpainted = new byte[pixels.Length];
             mask = new byte[pixels.Length];
-            initFourPointsInpainting(result, inpainted, mask, frame0.Height, frame0.Width, CameraInitialisation.channels, frame0Pixels, frame0Point2ds, 3, 16);
+            initFourPointsInpainting(result, inpainted, mask, frame0.Height, frame0.Width, CameraInitialisation.channels, frame0Pixels, frame0Point2ds, 3, 8);
 
             //Marshal.Copy(intPtr, inpainted, 0, pixels.Length);
 
@@ -194,10 +194,10 @@ public class DRUtil
                 Point2d point2 = new Point2d { x = (int)CreateFourPoints.currentPoints[2].x, y = Screen.height - (int)CreateFourPoints.currentPoints[2].y };
                 Point2d point3 = new Point2d { x = (int)CreateFourPoints.currentPoints[3].x, y = Screen.height - (int)CreateFourPoints.currentPoints[3].y };
 
-                point0 = GUIPoint2CameraPoint(point0);
-                point1 = GUIPoint2CameraPoint(point1);
-                point2 = GUIPoint2CameraPoint(point2);
-                point3 = GUIPoint2CameraPoint(point3);
+                point0 = GUIPoint2CameraPoint(point0, image.Width, image.Height);
+                point1 = GUIPoint2CameraPoint(point1, image.Width, image.Height);
+                point2 = GUIPoint2CameraPoint(point2, image.Width, image.Height);
+                point3 = GUIPoint2CameraPoint(point3, image.Width, image.Height);
 
                 currentPoint2ds[0] = point0;
                 currentPoint2ds[1] = point1;
@@ -228,31 +228,28 @@ public class DRUtil
         }
     }
 
-    private Point2d GUIPoint2CameraPoint(Point2d myGUIPoint)
+    private Point2d GUIPoint2CameraPoint(Point2d myGUIPoint, int cameraWidth, int cameraHeight)
     {
         int x;
         int y;
-       
-        CameraDevice.VideoModeData vmd;
-        vmd = CameraDevice.Instance.GetVideoMode(CameraDevice.CameraDeviceMode.MODE_OPTIMIZE_QUALITY);
 
-        if (1.0 * vmd.width / vmd.height < 1.0 * Screen.width / Screen.height)
+        if (1.0 * cameraWidth / cameraHeight < 1.0 * Screen.width / Screen.height)
         {
             //int visibleWidth = vmd.width;
-            int visibleHeight = (int)(Screen.height * (vmd.width * 1.0f / Screen.width));
+            int visibleHeight = (int)(Screen.height * (cameraWidth * 1.0f / Screen.width));
 
-            x = (int)(1.0 * myGUIPoint.x / Screen.width * vmd.width);
+            x = (int)(1.0 * myGUIPoint.x / Screen.width * cameraWidth);
 
-            y = (int)(1.0 * myGUIPoint.y / Screen.height * visibleHeight + (vmd.height - visibleHeight) / 2);
+            y = (int)(1.0 * myGUIPoint.y / Screen.height * visibleHeight + (cameraHeight - visibleHeight) / 2);
         }
         else
         {
             //int visibleHeight = vmd.height;
-            int visibleWidth = (int)(Screen.width * (vmd.height * 1.0f / Screen.height));
+            int visibleWidth = (int)(Screen.width * (cameraHeight * 1.0f / Screen.height));
 
-            x = (int)(1.0 * myGUIPoint.x / Screen.width * visibleWidth + (vmd.width - visibleWidth) / 2);
+            x = (int)(1.0 * myGUIPoint.x / Screen.width * visibleWidth + (cameraWidth - visibleWidth) / 2);
 
-            y = (int)(1.0 * myGUIPoint.y / Screen.height * vmd.height);
+            y = (int)(1.0 * myGUIPoint.y / Screen.height * cameraHeight);
         }
 
         return new Point2d
@@ -269,34 +266,31 @@ public class DRUtil
         double width;
         double height;
 
-        CameraDevice.VideoModeData vmd;
-        vmd = CameraDevice.Instance.GetVideoMode(CameraDevice.CameraDeviceMode.MODE_OPTIMIZE_QUALITY);
-
-        if (1.0 * vmd.width / vmd.height < 1.0 * Screen.width / Screen.height)
+        if (1.0 * CameraInitialisation.width / CameraInitialisation.height < 1.0 * Screen.width / Screen.height)
         {
             //int visibleWidth = vmd.width;
-            int visibleHeight = (int)(Screen.height * (vmd.width * 1.0f / Screen.width));
+            int visibleHeight = (int)(Screen.height * (CameraInitialisation.width * 1.0f / Screen.width));
 
-            x = myGUIRect.x / Screen.width * vmd.width;
+            x = myGUIRect.x / Screen.width * CameraInitialisation.width;
 
-            y = myGUIRect.y / Screen.height * visibleHeight + (vmd.height - visibleHeight) / 2;
+            y = myGUIRect.y / Screen.height * visibleHeight + (CameraInitialisation.height - visibleHeight) / 2;
 
-            width = myGUIRect.width / Screen.width * vmd.width;
+            width = myGUIRect.width / Screen.width * CameraInitialisation.width;
 
             height = myGUIRect.height / Screen.height * visibleHeight;
         }
         else
         {
             //int visibleHeight = vmd.height;
-            int visibleWidth = (int)(Screen.width * (vmd.height * 1.0f / Screen.height));
+            int visibleWidth = (int)(Screen.width * (CameraInitialisation.height * 1.0f / Screen.height));
 
-            x = myGUIRect.x / Screen.width * visibleWidth + (vmd.width - visibleWidth) / 2;
+            x = myGUIRect.x / Screen.width * visibleWidth + (CameraInitialisation.width - visibleWidth) / 2;
 
-            y = myGUIRect.y / Screen.height * vmd.height;
+            y = myGUIRect.y / Screen.height * CameraInitialisation.height;
 
             width = myGUIRect.width / Screen.width * visibleWidth;
 
-            height = myGUIRect.height / Screen.height * vmd.height;
+            height = myGUIRect.height / Screen.height * CameraInitialisation.height;
         }
 
         return new Rect2d
@@ -315,34 +309,31 @@ public class DRUtil
         double width;
         double height;
 
-        CameraDevice.VideoModeData vmd;
-        vmd = CameraDevice.Instance.GetVideoMode(CameraDevice.CameraDeviceMode.MODE_OPTIMIZE_QUALITY);
-
-        if (1.0 * vmd.width / vmd.height < 1.0 * Screen.width / Screen.height)
+        if (1.0 * CameraInitialisation.width / CameraInitialisation.height < 1.0 * Screen.width / Screen.height)
         {
             //int visibleWidth = vmd.width;
-            int visibleHeight = (int)(Screen.height * (vmd.width * 1.0f / Screen.width));
+            int visibleHeight = (int)(Screen.height * (CameraInitialisation.width * 1.0f / Screen.width));
 
-            x = myCameraRect.x / vmd.width * Screen.width;
+            x = myCameraRect.x / CameraInitialisation.width * Screen.width;
 
-            y = (myCameraRect.y - (vmd.height - visibleHeight) / 2) / visibleHeight * Screen.height;
+            y = (myCameraRect.y - (CameraInitialisation.height - visibleHeight) / 2) / visibleHeight * Screen.height;
 
-            width = myCameraRect.width / vmd.width * Screen.width;
+            width = myCameraRect.width / CameraInitialisation.width * Screen.width;
 
             height = myCameraRect.height / visibleHeight * Screen.height;
         }
         else
         {
             //int visibleHeight = vmd.height;
-            int visibleWidth = (int)(Screen.width * (vmd.height * 1.0f / Screen.height));
+            int visibleWidth = (int)(Screen.width * (CameraInitialisation.height * 1.0f / Screen.height));
 
-            x = (myCameraRect.x - (vmd.width - visibleWidth) / 2) / visibleWidth * Screen.width;
+            x = (myCameraRect.x - (CameraInitialisation.width - visibleWidth) / 2) / visibleWidth * Screen.width;
 
-            y = myCameraRect.y / vmd.height * Screen.height;
+            y = myCameraRect.y / CameraInitialisation.height * Screen.height;
 
             width = myCameraRect.width / visibleWidth * Screen.width;
 
-            height = myCameraRect.height / vmd.height * Screen.height;
+            height = myCameraRect.height / CameraInitialisation.height * Screen.height;
         }
 
         return new Rect2d

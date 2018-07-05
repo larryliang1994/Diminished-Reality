@@ -84,9 +84,7 @@ public class DisplayFrame : MonoBehaviour
 
             DRUtil.tempFourPointsInpainting(pixelsHandle.AddrOfPinnedObject(), texture.height, texture.width, CameraInitialisation.channels,
                                             DRUtil.Instance.inpainted, DRUtil.Instance.mask, DRUtil.Instance.frame0Point2ds, DRUtil.Instance.image.Pixels, DRUtil.Instance.currentPoint2ds);
-
             
-
             copyTexture.SetPixels32(pixels);
             copyTexture.Apply();
 

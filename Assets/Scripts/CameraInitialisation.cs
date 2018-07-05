@@ -8,6 +8,9 @@ public class CameraInitialisation : MonoBehaviour {
     public static Image.PIXEL_FORMAT pixelFormat = Image.PIXEL_FORMAT.UNKNOWN_FORMAT;
     public static int channels = 1;
 
+    public static int width;
+    public static int height;
+
     void Start()
     {
 #if UNITY_EDITOR
@@ -39,6 +42,16 @@ public class CameraInitialisation : MonoBehaviour {
         }
 
         CameraDevice.Instance.SetFocusMode(CameraDevice.FocusMode.FOCUS_MODE_CONTINUOUSAUTO);
+
+        CameraDevice.VideoModeData vmd;
+        vmd = CameraDevice.Instance.GetVideoMode(CameraDevice.CameraDeviceMode.MODE_OPTIMIZE_SPEED);
+
+        //Screen.SetResolution(vmd.width, vmd.height, Screen.fullScreen);
+
+        width = 640;
+        height = 480;
+
+        Debug.Log("CameraDevice Dimensions: " + CameraInitialisation.width + "x" + CameraInitialisation.height);
     }
 
     private void OnPaused(bool paused)
