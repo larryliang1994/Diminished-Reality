@@ -8,8 +8,10 @@ public class CameraInitialisation : MonoBehaviour {
     public static Image.PIXEL_FORMAT pixelFormat = Image.PIXEL_FORMAT.UNKNOWN_FORMAT;
     public static int channels = 1;
 
-    public static int width;
-    public static int height;
+    PositionalDeviceTracker positionalDeviceTracker;
+
+    //public static int width;
+    //public static int height;
 
     void Start()
     {
@@ -48,10 +50,21 @@ public class CameraInitialisation : MonoBehaviour {
 
         //Screen.SetResolution(vmd.width, vmd.height, Screen.fullScreen);
 
-        width = 640;
-        height = 480;
+        //width = 640;
+        //height = 480;
 
-        Debug.Log("CameraDevice Dimensions: " + CameraInitialisation.width + "x" + CameraInitialisation.height);
+        //Debug.Log("CameraDevice Dimensions: " + CameraInitialisation.width + "x" + CameraInitialisation.height);
+
+        positionalDeviceTracker = TrackerManager.Instance.GetTracker<PositionalDeviceTracker>();
+
+        if (positionalDeviceTracker == null)
+        {
+            Debug.Log("Ground Plane is not supported.");
+        }
+        else
+        {
+            Debug.Log("Ground Plane starts successfully.");
+        }
     }
 
     private void OnPaused(bool paused)
@@ -62,4 +75,30 @@ public class CameraInitialisation : MonoBehaviour {
             CameraDevice.Instance.SetFocusMode(CameraDevice.FocusMode.FOCUS_MODE_CONTINUOUSAUTO);
         }
     }
+
+    public void SetInpaintingMethod(int method)
+    {
+        DRUtil.inpaintingMethod = method + 2;
+
+        Debug.Log("Using Inpainting Method: " + DRUtil.inpaintingMethod);
+    }
+
+    public void SetSurroundingRandomisation(bool on)
+    {
+        DRUtil.useSurroundingRandomisation = on;
+
+        Debug.Log("Using Surrounding Randomisation: " + DRUtil.useSurroundingRandomisation);
+    }
+
+    public void SetIlluminationAdaptation(bool on)
+    {
+        DRUtil.useIlluminationAdaptation = on;
+
+        Debug.Log("Using Illumination Adaptation: " + DRUtil.useIlluminationAdaptation);
+    }
+
+    //public void SetSurroundingRandomisationOff()
+    //{
+    //    DRUtil.useSurroundingRandomisation = false;
+    //}
 }

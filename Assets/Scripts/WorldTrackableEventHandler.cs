@@ -11,7 +11,7 @@ public class WorldTrackableEventHandler : MonoBehaviour, ITrackableEventHandler
 
     #endregion // PROTECTED_MEMBER_VARIABLES
 
-    private bool found = false;
+    public static bool found = false;
 
     #region UNITY_MONOBEHAVIOUR_METHODS
 
@@ -44,7 +44,9 @@ public class WorldTrackableEventHandler : MonoBehaviour, ITrackableEventHandler
             newStatus == TrackableBehaviour.Status.TRACKED ||
             newStatus == TrackableBehaviour.Status.EXTENDED_TRACKED)
         {
-            Debug.Log("Trackable " + mTrackableBehaviour.TrackableName + " found");
+            //Debug.Log("Trackable " + mTrackableBehaviour.TrackableName + " found");
+
+            found = true;
 
             //if (!found)
             //{
@@ -54,8 +56,9 @@ public class WorldTrackableEventHandler : MonoBehaviour, ITrackableEventHandler
         else if (previousStatus == TrackableBehaviour.Status.TRACKED &&
                  newStatus == TrackableBehaviour.Status.NO_POSE)
         {
-            Debug.Log("Trackable " + mTrackableBehaviour.TrackableName + " lost");
+            //Debug.Log("Trackable " + mTrackableBehaviour.TrackableName + " lost");
             OnTrackingLost();
+            found = false;
         }
         else
         {
@@ -63,6 +66,7 @@ public class WorldTrackableEventHandler : MonoBehaviour, ITrackableEventHandler
             // Vuforia is starting, but tracking has not been lost or found yet
             // Call OnTrackingLost() to hide the augmentations
             OnTrackingLost();
+            found = false;
         }
     }
 
@@ -89,8 +93,6 @@ public class WorldTrackableEventHandler : MonoBehaviour, ITrackableEventHandler
             component.enabled = true;
         
         //VuforiaARController.Instance.RegisterTrackablesUpdatedCallback(OnTrackablesUpdated);
-
-        found = true;
     }
 
     protected virtual void OnTrackingLost()

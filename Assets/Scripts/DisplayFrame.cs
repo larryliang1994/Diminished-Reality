@@ -11,6 +11,7 @@ using Vuforia;
 public class DisplayFrame : MonoBehaviour 
 {
     public Text fpsText;
+    public Text foundText;
 
     private GameObject background;
     private Texture2D texture;
@@ -25,6 +26,10 @@ public class DisplayFrame : MonoBehaviour
     float m_timeCounter = 0.0f;
     float m_lastFramerate = 0.0f;
     public float m_refreshTime = 0.5f;
+
+    private float algorithmFrameRate = 0.0f;
+
+    System.Diagnostics.Stopwatch timer;
 
     // Use this for initialization
     void Start()
@@ -45,11 +50,15 @@ public class DisplayFrame : MonoBehaviour
             m_lastFramerate = (float)m_frameCounter / m_timeCounter;
             m_frameCounter = 0;
             m_timeCounter = 0.0f;
+
+            if (timer != null)
+            {
+                algorithmFrameRate = (float)(1000.0 / timer.Elapsed.TotalMilliseconds);
+            }
         }
 
         if (!DRUtil.Instance.loseTracked && currentFrameCount < DRUtil.Instance.currentFrameCount)
         {
-            //if (background == null)
             if (background == null || texture == null || pixels == null)
             {
                 background = transform.GetChild(0).gameObject;
@@ -67,24 +76,13 @@ public class DisplayFrame : MonoBehaviour
                 Debug.Log("Copy now.");
             }
 
-            //DRUtil.fourPointsInpainting(pixelsHandle.AddrOfPinnedObject(), texture.height, texture.width, CameraInitialisation.channels,
-            //DRUtil.Instance.image.Pixels, DRUtil.Instance.currentPoint2ds);
+            timer = new System.Diagnostics.Stopwatch();
+            timer.Start();
+            DRUtil.tempFourPointsInpainting(pixelsHandle.AddrOfPinnedObject(), DRUtil.Instance.image.Pixels, DRUtil.Instance.currentBoundingPoint2ds, DRUtil.Instance.currentControlPoint2ds, DRUtil.useIlluminationAdaptation, DRUtil.useSurroundingRandomisation);
+            timer.Stop();
 
-            //DRUtil.tempFourPointsInpainting(pixelsHandle.AddrOfPinnedObject(), texture.height, texture.width, CameraInitialisation.channels,
-            //DRUtil.Instance.frame0.Pixels,  DRUtil.Instance.image.Pixels, DRUtil.Instance.frame0Point2ds, DRUtil.Instance.currentPoint2ds);
+            //Debug.Log("Time Taken: " + timer.Elapsed.TotalMilliseconds);
 
-            //DRUtil.averageInpainting(pixelsHandle.AddrOfPinnedObject(), texture.height, texture.width, CameraInitialisation.channels, 
-            //DRUtil.Instance.image.Pixels, DRUtil.Instance.cameraRect);
-
-            //IntPtr address = pixelsHandle.AddrOfPinnedObject();
-            //Debug.Log("currentPoint2ds0 = " + DRUtil.Instance.currentPoint2ds[0].x + ", " + DRUtil.Instance.currentPoint2ds[0].y);
-            //Debug.Log("currentPoint2ds1 = " + DRUtil.Instance.currentPoint2ds[1].x + ", " + DRUtil.Instance.currentPoint2ds[1].y);
-            //Debug.Log("currentPoint2ds2 = " + DRUtil.Instance.currentPoint2ds[2].x + ", " + DRUtil.Instance.currentPoint2ds[2].y);
-            //Debug.Log("currentPoint2ds3 = " + DRUtil.Instance.currentPoint2ds[3].x + ", " + DRUtil.Instance.currentPoint2ds[3].y);
-
-            DRUtil.tempFourPointsInpainting(pixelsHandle.AddrOfPinnedObject(), texture.height, texture.width, CameraInitialisation.channels,
-                                            DRUtil.Instance.inpainted, DRUtil.Instance.mask, DRUtil.Instance.frame0Point2ds, DRUtil.Instance.image.Pixels, DRUtil.Instance.currentPoint2ds);
-            
             copyTexture.SetPixels32(pixels);
             copyTexture.Apply();
 
@@ -134,7 +132,16 @@ public class DisplayFrame : MonoBehaviour
     private void OnGUI()
     {
         //fpsText.text = "FPS:" + DRUtil.add(8, 9).ToString();
-        fpsText.text = "FPS:" + ((int)m_lastFramerate).ToString();
+        fpsText.text = "FPS:" + ((int)m_lastFramerate).ToString() + "/" + ((int)algorithmFrameRate).ToString();
+
+        if (WorldTrackableEventHandler.found) 
+        {
+            foundText.text = "Found Marker";
+        }
+        else
+        {
+            foundText.text = "Marker Not Found";
+        }
     }
 
     private static Texture2D _staticRectTexture;

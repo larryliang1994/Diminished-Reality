@@ -1,20 +1,22 @@
 ﻿<Properties StartupConfiguration="{129ADB85-A37D-772A-E1B7-2D5B505BD52C}|">
   <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="Unity.Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/DRUtil.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/ControlPointsManager.cs">
     <Files>
-      <File FileName="Assets/Scripts/CreateFourPoints.cs" Line="30" Column="10" />
-      <File FileName="Assets/Scripts/DRUtil.cs" Line="262" Column="28" />
-      <File FileName="Assets/Scripts/DisplayFrame.cs" Line="87" Column="13" />
-      <File FileName="Assets/Scripts/CameraInitialisation.cs" Line="50" Column="1" />
-      <File FileName="Assets/Scripts/SelectRegion.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/SelectRegion3D.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/WorldTrackableEventHandler.cs" Line="57" Column="80" />
+      <File FileName="Assets/Scripts/DRUtil.cs" Line="33" Column="233" />
+      <File FileName="Assets/Scripts/DisplayFrame.cs" Line="39" Column="2" />
+      <File FileName="Assets/Scripts/BoundingPointsManager.cs" Line="32" Column="1" />
+      <File FileName="Assets/Scripts/ControlPointsManager.cs" Line="187" Column="110" />
+      <File FileName="Assets/Scripts/CameraInitialisation.cs" Line="67" Column="10" />
+      <File FileName="Assets/Scripts/WorldTrackableEventHandler.cs" Line="59" Column="34" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches>
+    <Watch file="../../../Assets/Scripts/DRUtil.cs" line="179" offsetX="1142" offsetY="2668" expression="frame0ControlPoint2ds" liveUpdate="False" />
+    <Watch file="../../../Assets/Scripts/DRUtil.cs" line="164" offsetX="1139" offsetY="2457" expression="frame0BoundingPoint2ds" liveUpdate="False" />
+  </MonoDevelop.Ide.DebuggingService.PinnedWatches>
   <MultiItemStartupConfigurations />
 </Properties>

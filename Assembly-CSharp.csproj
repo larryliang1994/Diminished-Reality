@@ -59,8 +59,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\BoundingPointsManager.cs" />
     <Compile Include="Assets\Scripts\CameraInitialisation.cs" />
-    <Compile Include="Assets\Scripts\CreateFourPoints.cs" />
+    <Compile Include="Assets\Scripts\ControlPointsManager.cs" />
     <Compile Include="Assets\Scripts\DisplayFrame.cs" />
     <Compile Include="Assets\Scripts\DRUtil.cs" />
     <Compile Include="Assets\Scripts\SelectRegion.cs" />
@@ -77,11 +78,11 @@
     <None Include="Assets\StreamingAssets\Vuforia\VuforiaMars_Object_OT.xml" />
     <None Include="Assets\Vuforia\Shaders\DepthMask.shader" />
     <None Include="Assets\StreamingAssets\Vuforia\VuforiaMars_Images.xml" />
+    <None Include="Assets\StreamingAssets\Vuforia\DR.xml" />
     <None Include="Assets\Vuforia\Shaders\BrightTexture.shader" />
     <None Include="Assets\StreamingAssets\Vuforia\VuforiaMars_VuMark.xml" />
     <None Include="Assets\Vuforia\Shaders\DepthContour.shader" />
     <None Include="Assets\Resources\OutlinedOnlyShader.shader" />
-    <None Include="Assets\StreamingAssets\Vuforia\DR.xml" />
     <None Include="Assets\Vuforia\Shaders\Text3D.shader" />
     <Reference Include="UnityEditor.StandardEvents">
       <HintPath>/Users/larryliang/Desktop/FinalProject/Apps/AR/HelloWorldTest/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
