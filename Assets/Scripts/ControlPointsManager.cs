@@ -99,6 +99,8 @@ public class ControlPointsManager : MonoBehaviour {
                     z = (position0.z - position1.z) / corner * (corner * 1 - i) + position1.z;
                 }
 
+                z += Random.Range(0, offset);
+
                 controlPoints[i].transform.position = new Vector3(x, 0.0f, z);
             }
             // right
@@ -121,6 +123,8 @@ public class ControlPointsManager : MonoBehaviour {
                 {
                     z = (position1.z - position2.z) / corner * (corner * 2 - i) + position2.z;
                 }
+
+                x += Random.Range(0, offset);
 
                 controlPoints[i].transform.position = new Vector3(x, 0.0f, z);
             }
@@ -145,6 +149,8 @@ public class ControlPointsManager : MonoBehaviour {
                     z = (position2.z - position3.z) / corner * (corner * 3 - i) + position3.z;
                 }
 
+                z -= Random.Range(0, offset);
+
                 controlPoints[i].transform.position = new Vector3(x, 0.0f, z);
             }
             // left
@@ -167,6 +173,8 @@ public class ControlPointsManager : MonoBehaviour {
                 {
                     z = (position3.z - position0.z) / corner * (corner * 4 - i) + position0.z;
                 }
+
+                x -= Random.Range(0, offset);
 
                 controlPoints[i].transform.position = new Vector3(x, 0.0f, z);
             }

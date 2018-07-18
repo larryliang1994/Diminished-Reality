@@ -33,7 +33,7 @@ public class DRUtil
     public static extern void tempFourPointsInpainting(IntPtr outputData, byte[] currentImageData, Point2d[] currentBoundingPoint2ds, Point2d[] currentControlPoint2ds, bool useIlluminationAdaptation, bool useSurroundingRandomisation);
 
     [DllImport("DRDll")]
-    public static extern void initFourPointsInpainting(byte[] frame0ImageData, Point2d[] frame0BoundingPoint2ds, Point2d[] frame0ControlPoint2ds, int method, int parameter, bool useSurroundingRandomisation);
+    public static extern void initFourPointsInpainting(byte[] frame0ImageData, Point2d[] frame0BoundingPoint2ds, Point2d[] frame0ControlPoint2ds, int method, int parameter, bool useNormalisation);
 
     [DllImport("DRDll")]
     public static extern void initParameters(int h, int w, int c, int dh, int dw, int cps, int ibs);
@@ -149,7 +149,7 @@ public class DRUtil
 
             illuminationSize = GameObject.Find("Control Points").GetComponent<ControlPointsManager>().illuminationSize;
 
-            initParameters(frame0.Height, frame0.Width, CameraInitialisation.channels, 600, 800, controlPointSize, illuminationSize);
+            initParameters(frame0.Height, frame0.Width, CameraInitialisation.channels, 480, 640, controlPointSize, illuminationSize);
 
             frame0ControlPoint2ds = new Point2d[controlPointSize];
             currentControlPoint2ds = new Point2d[controlPointSize];
@@ -184,11 +184,11 @@ public class DRUtil
 
             if (inpaintingMethod == 2)
             {
-                initFourPointsInpainting(frame0Pixels, frame0BoundingPoint2ds, frame0ControlPoint2ds, 2, 21, useSurroundingRandomisation);
+                initFourPointsInpainting(frame0Pixels, frame0BoundingPoint2ds, frame0ControlPoint2ds, 2, 15, false);
             }
             else
             {
-                initFourPointsInpainting(frame0Pixels, frame0BoundingPoint2ds, frame0ControlPoint2ds, 3, 16, useSurroundingRandomisation);
+                initFourPointsInpainting(frame0Pixels, frame0BoundingPoint2ds, frame0ControlPoint2ds, 3, 16, false);
             }
 
             //Marshal.Copy(intPtr, inpainted, 0, pixels.Length);

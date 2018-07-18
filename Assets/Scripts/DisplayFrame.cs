@@ -76,10 +76,10 @@ public class DisplayFrame : MonoBehaviour
                 Debug.Log("Copy now.");
             }
 
-            timer = new System.Diagnostics.Stopwatch();
-            timer.Start();
+            //timer = new System.Diagnostics.Stopwatch();
+            //timer.Start();
             DRUtil.tempFourPointsInpainting(pixelsHandle.AddrOfPinnedObject(), DRUtil.Instance.image.Pixels, DRUtil.Instance.currentBoundingPoint2ds, DRUtil.Instance.currentControlPoint2ds, DRUtil.useIlluminationAdaptation, DRUtil.useSurroundingRandomisation);
-            timer.Stop();
+            //timer.Stop();
 
             //Debug.Log("Time Taken: " + timer.Elapsed.TotalMilliseconds);
 

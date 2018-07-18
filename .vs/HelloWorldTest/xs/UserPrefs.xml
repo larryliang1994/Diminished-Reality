@@ -2,9 +2,9 @@
   <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="Unity.Editor" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/ControlPointsManager.cs">
     <Files>
-      <File FileName="Assets/Scripts/DRUtil.cs" Line="33" Column="233" />
-      <File FileName="Assets/Scripts/DisplayFrame.cs" Line="39" Column="2" />
-      <File FileName="Assets/Scripts/BoundingPointsManager.cs" Line="32" Column="1" />
+      <File FileName="Assets/Scripts/DRUtil.cs" Line="202" Column="1" />
+      <File FileName="Assets/Scripts/DisplayFrame.cs" Line="90" Column="1" />
+      <File FileName="Assets/Scripts/BoundingPointsManager.cs" Line="72" Column="44" />
       <File FileName="Assets/Scripts/ControlPointsManager.cs" Line="187" Column="110" />
       <File FileName="Assets/Scripts/CameraInitialisation.cs" Line="67" Column="10" />
       <File FileName="Assets/Scripts/WorldTrackableEventHandler.cs" Line="59" Column="34" />

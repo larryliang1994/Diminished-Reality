@@ -30,9 +30,9 @@ public class BoundingPointsManager : MonoBehaviour {
 
         boundingPoint = Resources.Load("Prefabs/BoundingPoint") as GameObject;
 
-        sofa = Resources.Load("ArchViz Sofa Pack - Lite/Sofa2/Prefabs/Pref_Sofa2_Cotton") as GameObject;
-        sofa = Instantiate(sofa);
-        sofa.transform.localScale = new Vector3(0f, 0f, 0f);
+        //sofa = Resources.Load("ArchViz Sofa Pack - Lite/Sofa2/Prefabs/Pref_Sofa2_Cotton") as GameObject;
+        //sofa = Instantiate(sofa);
+        //sofa.transform.localScale = new Vector3(0f, 0f, 0f);
 
         for (int i = 0; i < boundingPointSize; i++)
         {
@@ -65,11 +65,11 @@ public class BoundingPointsManager : MonoBehaviour {
 
                     case 3: boundingPoints[3].transform.position = hit.point;
                         GameObject.Find("Control Points").GetComponent<ControlPointsManager>().CreateControlPoints(boundingPoints);
-                        sofa.transform.position =
-                            (boundingPoints[0].transform.position + boundingPoints[1].transform.position
-                             + boundingPoints[2].transform.position + boundingPoints[3].transform.position) / 4;
-                        sofa.transform.position = new Vector3(sofa.transform.position.x, sofa.transform.position.y, boundingPoints[0].transform.position.z * 2f);
-                        sofa.transform.localScale = new Vector3(0.07f, 0.07f, 0.07f);
+                        //sofa.transform.position =
+                        //    (boundingPoints[0].transform.position + boundingPoints[1].transform.position
+                        //     + boundingPoints[2].transform.position + boundingPoints[3].transform.position) / 4;
+                        //sofa.transform.position = new Vector3(sofa.transform.position.x, sofa.transform.position.y, boundingPoints[0].transform.position.z * 2f);
+                        //sofa.transform.localScale = new Vector3(0.07f, 0.07f, 0.07f);
                         break;
 
                     default:    

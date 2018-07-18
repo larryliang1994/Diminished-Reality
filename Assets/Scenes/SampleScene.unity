@@ -2498,8 +2498,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e2941248af1b4f6583a21de8efd4dbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  controlPointSize: 64
-  illuminationSize: 15
+  controlPointSize: 1024
+  illuminationSize: 9
 --- !u!4 &1546968115
 Transform:
   m_ObjectHideFlags: 0
