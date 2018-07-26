@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SelectRegion : MonoBehaviour {
-
+public class SelectRegion : MonoBehaviour 
+{
     // The selection square we draw when we drag the mouse to select units
     public RectTransform selectionSquareTrans;
 
@@ -43,7 +43,7 @@ public class SelectRegion : MonoBehaviour {
         double width  = finalSize.x;
         double height = finalSize.y;
 
-        DRUtil.Instance.SetCurrentRect(x, y, width, height);
+        //DRUtil.Instance.SetCurrentRect(x, y, width, height);
 
         Debug.Log("finalPosition = " + finalPosition);
         Debug.Log("finalSize = " + finalSize);

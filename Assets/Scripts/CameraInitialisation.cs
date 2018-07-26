@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Vuforia;
 
-public class CameraInitialisation : MonoBehaviour {
-    
+public class CameraInitialisation : MonoBehaviour 
+{
     public static Image.PIXEL_FORMAT pixelFormat = Image.PIXEL_FORMAT.UNKNOWN_FORMAT;
     public static int channels = 1;
 
@@ -78,9 +78,27 @@ public class CameraInitialisation : MonoBehaviour {
 
     public void SetInpaintingMethod(int method)
     {
-        DRUtil.inpaintingMethod = method + 2;
+        DRUtil.inpaintingMethod = method;
 
         Debug.Log("Using Inpainting Method: " + DRUtil.inpaintingMethod);
+    }
+
+    public void SetResolution(int which)
+    {
+        if (which == 0)
+        {
+            DRUtil.inpaintingWidth = 1280;
+            DRUtil.inpaintingHeight = 720;
+            DRUtil.inpaintingPatchSize = 21;
+        }
+        else if (which == 1)
+        {
+            DRUtil.inpaintingWidth = 640;
+            DRUtil.inpaintingHeight = 480;
+            DRUtil.inpaintingPatchSize = 11;
+        }
+
+        Debug.Log("Using Resolution: " + DRUtil.inpaintingWidth + "x" + DRUtil.inpaintingHeight);
     }
 
     public void SetSurroundingRandomisation(bool on)

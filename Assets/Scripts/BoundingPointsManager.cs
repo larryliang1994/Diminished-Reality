@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using Vuforia;
 
-public class BoundingPointsManager : MonoBehaviour {
-    
-    public static Vector2[] currentBoundingPointsPos;
-    public static Vector2[] frame0BoundingPointsPos;
+public class BoundingPointsManager : MonoBehaviour 
+{
+    private Vector2[] frame0BoundingPointsPos;
+    private Vector2[] currentBoundingPointsPos;
 
     private GameObject[] boundingPoints;
 
@@ -14,13 +14,11 @@ public class BoundingPointsManager : MonoBehaviour {
 
     private bool selecting = false;
 
-    private bool selected = false;
-
     private int currentPoint = 0;
 
     public int boundingPointSize = 4;
 
-    private GameObject sofa;
+    private GameObject cube;
 
 	void Start () 
     {
@@ -30,13 +28,14 @@ public class BoundingPointsManager : MonoBehaviour {
 
         boundingPoint = Resources.Load("Prefabs/BoundingPoint") as GameObject;
 
-        //sofa = Resources.Load("ArchViz Sofa Pack - Lite/Sofa2/Prefabs/Pref_Sofa2_Cotton") as GameObject;
-        //sofa = Instantiate(sofa);
-        //sofa.transform.localScale = new Vector3(0f, 0f, 0f);
+        cube = Resources.Load("Prefabs/Cube") as GameObject;
+        cube = Instantiate(cube);
+        cube.transform.localScale = new Vector3(0f, 0f, 0f);
 
         for (int i = 0; i < boundingPointSize; i++)
         {
             boundingPoints[i] = Instantiate(boundingPoint);
+            boundingPoints[i].GetComponent<MeshRenderer>().enabled = false;
         }
 	}
 	
@@ -65,11 +64,9 @@ public class BoundingPointsManager : MonoBehaviour {
 
                     case 3: boundingPoints[3].transform.position = hit.point;
                         GameObject.Find("Control Points").GetComponent<ControlPointsManager>().CreateControlPoints(boundingPoints);
-                        //sofa.transform.position =
-                        //    (boundingPoints[0].transform.position + boundingPoints[1].transform.position
-                        //     + boundingPoints[2].transform.position + boundingPoints[3].transform.position) / 4;
-                        //sofa.transform.position = new Vector3(sofa.transform.position.x, sofa.transform.position.y, boundingPoints[0].transform.position.z * 2f);
-                        //sofa.transform.localScale = new Vector3(0.07f, 0.07f, 0.07f);
+                        cube.transform.position = (boundingPoints[0].transform.position + boundingPoints[1].transform.position) / 2;
+                        cube.transform.position = new Vector3(cube.transform.position.x, cube.transform.position.y, boundingPoints[0].transform.position.z + 0.15f);
+                        cube.transform.localScale = new Vector3(0.07f, 0.07f, 0.07f);
                         break;
 
                     default:    
@@ -78,11 +75,6 @@ public class BoundingPointsManager : MonoBehaviour {
 
                 currentPoint++;
             }
-        }
-
-        if (selected)
-        {
-            UpdateBoundingPoints();
         }
 	}
 
@@ -104,26 +96,26 @@ public class BoundingPointsManager : MonoBehaviour {
 
         for (int i = 0; i < boundingPointSize; i++)
         {
-            frame0BoundingPointsPos[i] = Camera.main.WorldToScreenPoint(boundingPoints[i].transform.position);
-        }
-
-        for (int i = 0; i < boundingPointSize; i++)
-        {
             boundingPoints[i].GetComponent<MeshRenderer>().enabled = false;
         }
 
         GameObject.Find("Control Points").GetComponent<ControlPointsManager>().HideControlPoints();
 
-        DRUtil.Instance.InpaintWithFourPoints();
+        for (int i = 0; i < boundingPointSize; i++)
+        {
+            frame0BoundingPointsPos[i] = Camera.main.WorldToScreenPoint(boundingPoints[i].transform.position);
+        }
 
-        selected = true;
+        DRUtil.Instance.InpaintWithFourPoints(frame0BoundingPointsPos);
     }
 
-    public void UpdateBoundingPoints()
+    public Vector2[] GetCurrentBoundingPointsPos()
     {
         for (int i = 0; i < boundingPointSize; i++)
         {
             currentBoundingPointsPos[i] = Camera.main.WorldToScreenPoint(boundingPoints[i].transform.position);
         }
+
+        return currentBoundingPointsPos;
     }
 }

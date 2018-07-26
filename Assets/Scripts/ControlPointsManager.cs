@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ControlPointsManager : MonoBehaviour {
-    
-    public static Vector2[] currentControlPointsPos;
-    public static Vector2[] frame0ControlPointsPos;
+public class ControlPointsManager : MonoBehaviour 
+{
+    private Vector2[] frame0ControlPointsPos;
+    private Vector2[] currentControlPointsPos;
 
     private GameObject[] controlPoints;
 
@@ -13,8 +13,6 @@ public class ControlPointsManager : MonoBehaviour {
 
     public int controlPointSize = 8;
     public int illuminationSize = 15;
-
-    private bool set = false;
 
 	void Start () 
     {
@@ -27,17 +25,10 @@ public class ControlPointsManager : MonoBehaviour {
         for (int i = 0; i < controlPointSize; i++)
         {
             controlPoints[i] = Instantiate(controlPoint);
+            controlPoints[i].GetComponent<MeshRenderer>().enabled = false;
         }
 	}
 	
-	void Update () 
-    {
-        if (set)
-        {
-            UpdateControlPoints();
-        }
-	}
-
     public void HideControlPoints()
     {
         for (int i = 0; i < controlPointSize; i++)
@@ -184,15 +175,20 @@ public class ControlPointsManager : MonoBehaviour {
         {
             frame0ControlPointsPos[i] = Camera.main.WorldToScreenPoint(controlPoints[i].transform.position);
         }
-
-        set = true;
     }
 
-    void UpdateControlPoints()
+    public Vector2[] GetFrame0ControlPointsPos()
+    {
+        return frame0ControlPointsPos;
+    }
+
+    public Vector2[] GetCurrentControlPointsPos()
     {
         for (int i = 0; i < controlPointSize; i++)
         {
             currentControlPointsPos[i] = Camera.main.WorldToScreenPoint(controlPoints[i].transform.position);
         }
+
+        return currentControlPointsPos;
     }
 }
