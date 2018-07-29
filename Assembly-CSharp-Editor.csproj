@@ -9,7 +9,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{7161CFC1-AB73-55AE-1FA8-3354C0D9E2E5}</ProjectGuid>
+    <ProjectGuid>{DC060710-B9CB-5973-8053-1E2A442FCDDF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp-Editor</AssemblyName>
@@ -66,10 +66,10 @@
     <None Include="Assets\Editor\Vuforia\ForPrint\ModelTarget\readme_3dprint.txt" />
     <None Include="Assets\Editor\Vuforia\CylinderTargetTextures\VuforiaMars_Images\authoringinfo.xml" />
     <Reference Include="UnityEditor.StandardEvents">
-      <HintPath>/Users/larryliang/Desktop/FinalProject/Apps/AR/HelloWorldTest/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
+      <HintPath>/Users/larryliang/Desktop/FinalProject/Apps/AR/DiminishedReality/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
     </Reference>
     <Reference Include="Unity.PackageManagerUI.Editor">
-      <HintPath>/Users/larryliang/Desktop/FinalProject/Apps/AR/HelloWorldTest/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
+      <HintPath>/Users/larryliang/Desktop/FinalProject/Apps/AR/DiminishedReality/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>/Applications/Unity/Unity.app/Contents/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
@@ -674,7 +674,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Assembly-CSharp.csproj">
-      <Project>{129ADB85-A37D-772A-E1B7-2D5B505BD52C}</Project>
+      <Project>{D090E750-A3BD-56A0-CE5B-20074B80EE66}</Project>
       <Name>Assembly-CSharp</Name>
     </ProjectReference>
   </ItemGroup>
